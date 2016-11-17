@@ -207,7 +207,7 @@ void recievethread()
 				struct DNS_HEADER *dns = (struct DNS_HEADER*) payload;
 				if(dns->ra == 1)
 				{
-          				if(body_length > 1500) {
+          				if(body_length > 1250) {
 					  	found_srvs++;
 					  	fprintf(fd,"%s . %d\n",inet_ntoa(saddr.sin_addr),body_length);
 					  	fflush(fd);
