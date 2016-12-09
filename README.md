@@ -15,7 +15,8 @@ Donation would be much appreciated: 1Gi5Rpz5RBEUpGknSwyRgqzk7b5bQ7Abp2 ~ the ori
  * OS Supports raw sockets (For scanners and saddam++)
  * Python 2.7
  * [Pinject](https://github.com/OffensivePython/Pinject)
-
+ * gcc or equivalent
+ 
 # Usage
 ```
 	   _____           __    __                   ____  __              ____  __              
