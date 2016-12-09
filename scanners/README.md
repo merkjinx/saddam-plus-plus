@@ -2,10 +2,21 @@
  includes 
  * dns scanner
  * ntp scanner
+# quick compile:
+  for both scanner
+  ```
+  make
+  ```
 
 # Requierments
  * gcc
- 
+ * automake (Optional)
+
+# quick compile:
+for both scanner
+```
+make
+```
 # dns scanner: 
 
 # compile: 
