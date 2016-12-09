@@ -3,12 +3,6 @@
  * dns scanner
  * ntp scanner
 
-# quick compile:
-  for both scanner
-  ```
-  make
-  ```
-
 # Requierments
  * gcc
  * automake (Optional)
