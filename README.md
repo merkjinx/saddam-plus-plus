@@ -12,7 +12,7 @@ Read more about DDoS Amplification Attacks [here](http://www.pythonforpentesting
 
 Donation would be much appreciated: 1Gi5Rpz5RBEUpGknSwyRgqzk7b5bQ7Abp2 ~ the original developer
 # Requirements
- * OS Supports raw sockets
+ * OS Supports raw sockets (For scanners and saddam++)
  * Python 2.7
  * [Pinject](https://github.com/OffensivePython/Pinject)
 
