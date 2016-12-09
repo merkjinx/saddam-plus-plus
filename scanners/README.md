@@ -8,10 +8,15 @@
  * automake (Optional)
 
 # quick compile:
-for both scanner
+
+Run 
+
 ```
 make
 ```
+
+* Note: I havent tested the makefile yet if there is an issue please report it. I will fix it ASAP
+
 # dns scanner: 
 
 # compile: 
