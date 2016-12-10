@@ -7,8 +7,6 @@
  * gcc
  * automake (Optional)
 
-# quick compile:
-
 # compile: 
 ```
 make
