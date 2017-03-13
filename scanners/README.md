@@ -5,11 +5,11 @@
 
 # Requierments
  * gcc
- * automake (Optional)
+ * automake (Optional) Makefile not working as of now
 
 # compile: 
 ```
-make
+./build.sh
 ```
 
 
