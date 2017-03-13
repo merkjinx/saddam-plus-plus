@@ -7,5 +7,5 @@
  * clean up txt version of software / create txt argument
  * clean up code a little 
  * add custom payload settings
- 
+ * add dns query list and vuln nameservers (possibly)
 Got any suggestions? submit a pull request!
