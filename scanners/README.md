@@ -1,4 +1,4 @@
-# Scanners for saddam
+# Scanners for saddam-plus-plus
  includes 
  * dns scanner
  * ntp scanner
