@@ -21,6 +21,8 @@ LOGO = r'''
 	/____/\__,_/\__,_/\__,_/\__,_/_/ /_/ /_/  /_/   /_/\__,_/____/  /_/   /_/\__,_/____/ 
 	https://github.com/OffensivePython/Saddam ~ https://github.com/merkjinx/saddam-plus-plus
 	https://twitter.com/OffensivePython
+	
+	Note there will most likely be bugs with kiddiebooter 
 '''
 
 HELP = (
@@ -29,7 +31,9 @@ HELP = (
 	'SNMP Amplification file',
 	'SSDP Amplification file',
 	'Number of threads (default=1)',
-	'Attack port of target' )
+	'Attack port of target',
+	'Kiddiebooter user list'
+)
 
 
 OPTIONS = (
@@ -37,6 +41,7 @@ OPTIONS = (
 	(('-n', '--ntp'), dict(dest='ntp', metavar='FILE', help=HELP[1])),
 	(('-s', '--snmp'), dict(dest='snmp', metavar='FILE', help=HELP[2])),
 	(('-p', '--ssdp'), dict(dest='ssdp', metavar='FILE', help=HELP[3])),
+	(('-k', '--kiddieboot'), dict(dest='kb', metavar='FILE', help=HELP[6])),
 	(('-t', '--threads'), dict(dest='threads', type=int, default=1, metavar='N', help=HELP[4])),
 	(('-P', '--port'), dict(dest='sendingport', type=int, default=(randint(1,65535)), metavar='port', help=HELP[5])) )
 
@@ -306,10 +311,16 @@ def main():
 		files['snmp'] = [options.snmp]
 	if options.ssdp:
 		files['ssdp'] = [options.ssdp]
+	if options.kb:
+		print 'Sorry kiddiebooter is unavailable at this time'
+		sys.exit()
 	if files:
 		event = threading.Event()
 		event.set()
 		if 'BENCHMARK'==args[0].upper():
+			if options.kb:
+				print 'kiddiebooter does not support benchmark at this time'
+				sys.exit()
 			ddos = DDoS(args[0], options.threads, domains, event,options.sendingport)
 			Benchmark(ddos)
 		else:
