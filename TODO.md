@@ -3,6 +3,7 @@
  * ~~Add scanners for dns and ntp~~
  * ~~clean up scanner readme.md~~
  * ~~add build.sh~~
+ * add kiddiebooter minecraft ddos : ) have fun with that! (Expect Bugs)
  * add scanners for SNMP and SSDP / Makefiles?
  * clean up txt version of software / create txt argument
  * clean up code a little 
