@@ -1,7 +1,6 @@
 CC=gcc
 
-
-dns: dns-scanner.o  
-        gcc -o dns-scanner dns.c
-ntp: ntp-scanner.o 
-        gcc -o ntp-scanner dns.c
+all: dns.o 
+	gcc -pthread -o dns-scanner dns.c 
+all: ntp.o
+	gcc -pthead ntp.c -o ntp-scanner
