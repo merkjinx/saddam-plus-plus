@@ -3,7 +3,7 @@
  * dns scanner
  * ntp scanner
 
-# Requierments
+# Requirements
  * gcc
  * automake (Optional) Makefile not working as of now
 
